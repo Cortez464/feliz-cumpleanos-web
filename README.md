@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Feliz Cumpleaños mi Amor ❤️</title>
-  <!-- Usamos Tailwind via CDN para utilidades rápidas -->
+  <title>¡Una Sorpresa para Ti! ❤️</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Librería de Confeti Profesional -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@300;400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@300;400;700&family=Share+Tech+Mono&display=swap');
 
     body {
       margin: 0;
@@ -15,12 +17,9 @@
       background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
       background-size: 400% 400%;
       animation: gradient 15s ease infinite;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       font-family: 'Roboto', sans-serif;
-      color: white;
       overflow-x: hidden;
+      color: white;
     }
 
     @keyframes gradient {
@@ -29,138 +28,320 @@
       100% {background-position: 0% 50%;}
     }
 
+    /* PANTALLA DE INICIO (Caja) */
+    #welcome-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      transition: all 0.8s ease-out;
+    }
+
+    .gift-box {
+      font-size: 100px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s;
+    }
+
+    /* Animaciones de Suspenso */
+    .shake-mild { animation: shake 0.5s; }
+    .shake-hard { animation: shake 0.5s infinite; color: #ff69b4; }
+    .shake-error { animation: shake 0.3s; border-color: red !important; }
+    
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      10% { transform: translate(-1px, -2px) rotate(-1deg); }
+      20% { transform: translate(-3px, 0px) rotate(1deg); }
+      30% { transform: translate(3px, 2px) rotate(0deg); }
+      40% { transform: translate(1px, -1px) rotate(1deg); }
+      50% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-3px, 1px) rotate(0deg); }
+      70% { transform: translate(3px, 1px) rotate(-1deg); }
+      80% { transform: translate(-1px, -1px) rotate(1deg); }
+      90% { transform: translate(1px, 2px) rotate(0deg); }
+      100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
+
+    /* Input de Contraseña Estilo Hacker */
+    #password-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      animation: fadeIn 0.5s;
+    }
+
+    .hacker-input {
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid #00ff00;
+      color: #00ff00;
+      font-family: 'Share Tech Mono', monospace;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 1.2rem;
+      outline: none;
+      width: 250px;
+      letter-spacing: 2px;
+    }
+
+    .hacker-input::placeholder {
+      color: rgba(0, 255, 0, 0.5);
+    }
+
+    .hacker-btn {
+      margin-top: 15px;
+      background: #00ff00;
+      color: black;
+      font-family: 'Share Tech Mono', monospace;
+      padding: 8px 20px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .hacker-btn:hover { background: #00cc00; }
+
+    /* CONTENIDO PRINCIPAL */
+    #main-content {
+      display: none; /* Se activa con JS */
+      opacity: 0;
+      transition: opacity 2s ease-in;
+    }
+
     .container {
       text-align: center;
-      padding: 40px;
-      background: rgba(0,0,0,0.4);
-      border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-      width: 90%;
+      padding: 30px;
       max-width: 800px;
-      margin: 20px 0;
-      backdrop-filter: blur(5px);
+      margin: 40px auto;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.2);
     }
 
     h1 {
       font-family: 'Dancing Script', cursive;
-      font-size: clamp(3rem, 8vw, 5rem);
-      margin: 0;
-      text-shadow: 3px 3px 10px rgba(0,0,0,0.6);
+      font-size: clamp(3rem, 6vw, 5rem);
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
-    h2 {
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-      margin: 20px 0;
-    }
-
-    p {
-      font-size: clamp(1rem, 3vw, 1.4rem);
-      margin: 30px auto;
-      line-height: 1.6;
-    }
-
+    /* Video Container */
     .video-wrapper {
-      margin: 40px auto;
       width: 100%;
-      /* Esto asegura que el contenedor tenga formato panorámico (16:9) */
       aspect-ratio: 16 / 9;
-      border: 8px solid rgba(255,255,255,0.3);
       border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      position: relative;
-      background: #000;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      margin: 30px 0;
+      background: black;
     }
+    
+    iframe { width: 100%; height: 100%; }
 
-    /* Estilo para el iframe del video */
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+    /* Efecto de Máquina de Escribir */
+    #love-letter {
+      font-size: 1.25rem;
+      line-height: 1.8;
+      min-height: 100px; /* Evita saltos de layout */
     }
+    
+    .cursor::after {
+      content: '|';
+      animation: blink 1s infinite;
+    }
+    
+    @keyframes blink { 50% { opacity: 0; } }
 
-    .heart {
-      color: #ff69b4;
-      display: inline-block;
-      animation: pulse 1.5s ease infinite;
-      font-size: 2rem;
-      margin-top: 20px;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-      100% { transform: scale(1); }
-    }
-
-    .confetti {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      top: -10px;
-      z-index: 10;
-      pointer-events: none;
-      animation: fall linear forwards;
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(100vh) rotate(720deg);
-      }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Feliz Cumpleaños</h1>
-    <h2>Mi amor hermoso ❤️</h2>
+  <!-- PANTALLA 1: SUSPENSO Y SEGURIDAD -->
+  <div id="welcome-screen">
+    <div id="gift-icon" class="gift-box" onclick="gestionarClics()">🎁</div>
     
-    <p>
-      Hoy celebro el día en que llegó al mundo la persona más increíble, 
-      la mujer que ilumina mi vida todos los días. 
-      Gracias por ser mi compañera, mi mejor amiga y el amor de mi vida. 
-      Te amo con todo mi corazón y deseo que este día esté lleno de magia, 
-      risas y mucho amor. ¡Te amo más que ayer y menos que mañana!
+    <!-- Mensaje cambiante -->
+    <p id="status-msg" class="text-white text-xl mt-6 font-light tracking-widest uppercase text-center px-4">
+      Tienes un regalo pendiente...
     </p>
+    <p id="hint-msg" class="text-white text-xs mt-2 opacity-50">(Haz clic para abrir)</p>
 
-    <p>Con todo mi amor,<br><strong>Tu esposo que te adora</strong></p>
-
-    <!-- CONTENEDOR DE VIDEO (MODO IFRAME) -->
-    <div class="video-wrapper">
-      <!-- 
-         Usamos el modo PREVIEW de Google Drive.
-         Esto carga el reproductor oficial que es mucho más compatible.
-      -->
-      <iframe 
-        src="https://drive.google.com/file/d/1s5cP8TqO7SEDR-95qC9w0on92g3BOUyT/preview" 
-        allow="autoplay; fullscreen"
-        allowfullscreen>
-      </iframe>
+    <!-- INPUT DE CONTRASEÑA (Oculto al inicio) -->
+    <div id="password-container">
+      <p class="text-green-400 font-mono text-sm mb-2">> INGRESE PROTOCOLO DE BODA</p>
+      <input type="text" id="wedding-date" class="hacker-input" placeholder="DD-MM-AAAA">
+      <button onclick="verificarPassword()" class="hacker-btn">DESENCRIPTAR</button>
+      <p id="error-msg" class="text-red-500 font-mono text-xs mt-2 h-4"></p>
     </div>
-
-    <div class="heart">❤️ ¡Te amo por siempre! ❤️</div>
   </div>
 
-  <script>
-    // Confetti automático
-    setInterval(() => {
-      const colors = ['#ff69b4', '#ff1493', '#ff4500', '#ffd700', '#00ced1', '#ffffff'];
-      const confetti = document.createElement('div');
-      confetti.classList.add('confetti');
+  <!-- PANTALLA 2: EL SHOW -->
+  <div id="main-content">
+    <div class="container mx-auto px-4">
+      <h1>¡Feliz Cumpleaños!</h1>
+      <h2 class="text-3xl font-light mb-6">Mi esposa amada ❤️</h2>
       
-      // Posición aleatoria
-      confetti.style.left = Math.random() * 100 + 'vw';
-      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      
-      // Velocidad aleatoria
-      confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-      
-      document.body.appendChild(confetti);
+      <!-- Aquí se escribirá el texto automáticamente -->
+      <p id="love-letter" class="mb-8 font-light"></p>
 
-      // Limpieza de memoria
-      setTimeout(() => confetti.remove(), 5000);
-    }, 300);
+      <!-- VIDEO -->
+      <div class="video-wrapper">
+        <iframe 
+          src="https://drive.google.com/file/d/1s5cP8TqO7SEDR-95qC9w0on92g3BOUyT/preview" 
+          frameborder="0"
+          allow="autoplay; fullscreen"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <button onclick="lanzarConfetti()" class="mt-4 px-8 py-3 bg-white text-pink-600 font-bold rounded-full shadow-lg hover:scale-110 transition transform">
+        🎉 ¡TE AMO! 🎉
+      </button>
+    </div>
+  </div>
+
+  <!-- MÚSICA DE FONDO -->
+  <audio id="bg-music" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+  </audio>
+
+  <script>
+    /* ================= LÓGICA DE SUSPENSO ================= */
+    let clicCount = 0;
+    const giftIcon = document.getElementById('gift-icon');
+    const statusMsg = document.getElementById('status-msg');
+    const hintMsg = document.getElementById('hint-msg');
+    const passwordContainer = document.getElementById('password-container');
+
+    function gestionarClics() {
+      // Si ya mostramos el password, no hacemos nada más con el icono
+      if (clicCount >= 3) return;
+
+      clicCount++;
+
+      if (clicCount === 1) {
+        // Nivel 1: Resistencia leve
+        giftIcon.classList.remove('bounce'); 
+        void giftIcon.offsetWidth; 
+        giftIcon.classList.add('shake-mild');
+        statusMsg.innerText = "Acceso restringido. Protocolo de seguridad activo.";
+        
+      } else if (clicCount === 2) {
+        // Nivel 2: Resistencia fuerte
+        giftIcon.classList.remove('shake-mild');
+        void giftIcon.offsetWidth;
+        giftIcon.classList.add('shake-hard');
+        statusMsg.innerText = "¡ALERTA! Se requiere autenticación manual.";
+        statusMsg.style.color = "#ff69b4";
+        statusMsg.classList.add('font-bold');
+
+      } else if (clicCount === 3) {
+        // Nivel 3: SOLICITAR PASSWORD
+        mostrarPasswordInput();
+      }
+    }
+
+    function mostrarPasswordInput() {
+      giftIcon.style.cursor = "default";
+      giftIcon.classList.remove('shake-hard');
+      statusMsg.innerText = "SISTEMA BLOQUEADO";
+      statusMsg.style.color = "#00ff00"; // Color hacker
+      statusMsg.style.fontFamily = "'Share Tech Mono', monospace";
+      hintMsg.style.display = 'none';
+      
+      // Mostrar input
+      passwordContainer.style.display = 'flex';
+    }
+
+    function verificarPassword() {
+      const input = document.getElementById('wedding-date');
+      const errorMsg = document.getElementById('error-msg');
+      const val = input.value.trim();
+
+      // Verificar la fecha exacta
+      if (val === '28092024') {
+        abrirRegaloDefinitivo();
+      } else {
+        // Error visual
+        input.classList.add('shake-error');
+        input.style.borderColor = "red";
+        errorMsg.innerText = "ACCESO DENEGADO: Fecha incorrecta";
+        
+        setTimeout(() => {
+          input.classList.remove('shake-error');
+          input.style.borderColor = "#00ff00";
+          errorMsg.innerText = "";
+        }, 1000);
+      }
+    }
+
+    function abrirRegaloDefinitivo() {
+      const audio = document.getElementById('bg-music');
+      audio.volume = 0.5;
+      audio.play().catch(e => console.log("Audio play error:", e));
+
+      // Efecto visual de desaparición
+      const welcomeScreen = document.getElementById('welcome-screen');
+      welcomeScreen.style.transform = 'scale(1.5)';
+      welcomeScreen.style.opacity = '0';
+      
+      setTimeout(() => {
+        welcomeScreen.style.display = 'none';
+        const mainContent = document.getElementById('main-content');
+        mainContent.style.display = 'block';
+        
+        setTimeout(() => {
+          mainContent.style.opacity = '1';
+          // Iniciar máquina de escribir
+          typeWriter();
+          // Lanzar confeti
+          lanzarConfetti();
+        }, 100);
+      }, 800);
+    }
+
+    /* ================= MÁQUINA DE ESCRIBIR ================= */
+    const textToType = "Hoy celebro tu vida, tu risa y cada momento juntos. Eres mi roca, mi alegría y mi mejor amiga. Espero que este video te recuerde lo mucho que te adoro. ¡Gracias por existir!";
+    const speed = 50; 
+    let i = 0;
+
+    function typeWriter() {
+      if (i < textToType.length) {
+        document.getElementById("love-letter").innerHTML += textToType.charAt(i);
+        i++;
+        setTimeout(typeWriter, speed);
+      } else {
+        document.getElementById("love-letter").classList.remove("cursor");
+      }
+    }
+
+    /* ================= CONFETI ================= */
+    function lanzarConfetti() {
+      var duration = 3 * 1000;
+      var animationEnd = Date.now() + duration;
+      var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+      var randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+      var interval = setInterval(function() {
+        var timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
+        var particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+      }, 250);
+    }
   </script>
 </body>
 </html>
