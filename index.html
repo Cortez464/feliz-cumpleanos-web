@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feliz Cumpleaños mi Amor ❤️</title>
+  <!-- Usamos Tailwind via CDN para utilidades rápidas -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@300;400&display=swap');
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Roboto', sans-serif;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradient {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .container {
+      text-align: center;
+      padding: 40px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      width: 90%;
+      max-width: 800px;
+      margin: 20px 0;
+      backdrop-filter: blur(5px);
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(3rem, 8vw, 5rem);
+      margin: 0;
+      text-shadow: 3px 3px 10px rgba(0,0,0,0.6);
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      margin: 20px 0;
+    }
+
+    p {
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      margin: 30px auto;
+      line-height: 1.6;
+    }
+
+    .video-wrapper {
+      margin: 40px auto;
+      width: 100%;
+      /* Esto asegura que el contenedor tenga formato panorámico (16:9) */
+      aspect-ratio: 16 / 9;
+      border: 8px solid rgba(255,255,255,0.3);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      position: relative;
+      background: #000;
+    }
+
+    /* Estilo para el iframe del video */
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .heart {
+      color: #ff69b4;
+      display: inline-block;
+      animation: pulse 1.5s ease infinite;
+      font-size: 2rem;
+      margin-top: 20px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      z-index: 10;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Feliz Cumpleaños</h1>
+    <h2>Mi amor hermoso ❤️</h2>
+    
+    <p>
+      Hoy celebro el día en que llegó al mundo la persona más increíble, 
+      la mujer que ilumina mi vida todos los días. 
+      Gracias por ser mi compañera, mi mejor amiga y el amor de mi vida. 
+      Te amo con todo mi corazón y deseo que este día esté lleno de magia, 
+      risas y mucho amor. ¡Te amo más que ayer y menos que mañana!
+    </p>
+
+    <p>Con todo mi amor,<br><strong>Tu esposo que te adora</strong></p>
+
+    <!-- CONTENEDOR DE VIDEO (MODO IFRAME) -->
+    <div class="video-wrapper">
+      <!-- 
+         Usamos el modo PREVIEW de Google Drive.
+         Esto carga el reproductor oficial que es mucho más compatible.
+      -->
+      <iframe 
+        src="https://drive.google.com/file/d/1s5cP8TqO7SEDR-95qC9w0on92g3BOUyT/preview" 
+        allow="autoplay; fullscreen"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="heart">❤️ ¡Te amo por siempre! ❤️</div>
+  </div>
+
+  <script>
+    // Confetti automático
+    setInterval(() => {
+      const colors = ['#ff69b4', '#ff1493', '#ff4500', '#ffd700', '#00ced1', '#ffffff'];
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      
+      // Posición aleatoria
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      
+      // Velocidad aleatoria
+      confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+      
+      document.body.appendChild(confetti);
+
+      // Limpieza de memoria
+      setTimeout(() => confetti.remove(), 5000);
+    }, 300);
+  </script>
+</body>
+</html>
