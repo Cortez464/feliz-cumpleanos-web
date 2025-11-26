@@ -11,15 +11,29 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@300;400;700&family=Share+Tech+Mono&display=swap');
 
+    /* Variables de Estilo Romántico */
+    :root {
+      --color-primary: #FF69B4; /* Rosa Vibrante */
+      --color-secondary: #FFD700; /* Dorado Suave */
+      --color-error: #FF0000; /* Rojo Intenso */
+      --font-code: 'Share Tech Mono', monospace;
+      --font-body: 'Roboto', sans-serif;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
-      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-      background-size: 400% 400%;
-      animation: gradient 15s ease infinite;
-      font-family: 'Roboto', sans-serif;
+      background: black;
+      font-family: var(--font-body);
       overflow-x: hidden;
       color: white;
+    }
+
+    /* Fondo animado (se activa al final) */
+    .romantic-bg {
+      background: linear-gradient(-45deg, #FF69B4, #9D50BB, #EE7752, #FFD700);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
     }
 
     @keyframes gradient {
@@ -28,15 +42,39 @@
       100% {background-position: 0% 50%;}
     }
 
-    /* PANTALLA DE INICIO (Caja) */
+    /* --- FASE 0: SECUENCIA ROMÁNTICA DE ARRANQUE --- */
+    #boot-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      z-index: 100;
+      padding: 20px;
+      font-family: var(--font-code);
+      color: var(--color-secondary); /* Texto dorado */
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    
+    .terminal-line {
+      margin: 2px 0;
+      opacity: 0.9;
+      text-shadow: 0 0 5px var(--color-secondary); /* Brillo dorado */
+    }
+
+    /* --- FASE 1: CAJA DE REGALO / BLOQUEO INICIAL --- */
     #welcome-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.9);
-      display: flex;
+      background: rgba(0,0,0,0.95);
+      display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -53,8 +91,18 @@
 
     /* Animaciones de Suspenso */
     .shake-mild { animation: shake 0.5s; }
-    .shake-hard { animation: shake 0.5s infinite; color: #ff69b4; }
-    .shake-error { animation: shake 0.3s; border-color: red !important; }
+    .shake-hard { animation: shake 0.5s infinite; color: var(--color-primary); }
+    .shake-error { animation: shake 0.3s; border-color: var(--color-error) !important; }
+    
+    /* Alarma visual (Rojo de Tensión) */
+    .red-flash {
+      animation: flashRed 0.5s;
+    }
+    
+    @keyframes flashRed {
+      0%, 100% { background: rgba(0,0,0,0.95); }
+      50% { background: rgba(255,0,0,0.3); } /* Rojo menos agresivo */
+    }
     
     @keyframes shake {
       0% { transform: translate(1px, 1px) rotate(0deg); }
@@ -70,7 +118,64 @@
       100% { transform: translate(1px, -2px) rotate(-1deg); }
     }
 
-    /* Input de Contraseña Estilo Hacker */
+    /* EFECTO GLITCH (Transición Rápida) */
+    .glitch-effect {
+      animation: glitch-anim 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+      color: var(--color-primary); /* Glitch rosa */
+      background: black;
+    }
+
+    @keyframes glitch-anim {
+      0% { transform: translate(0) }
+      20% { transform: translate(-2px, 2px) }
+      40% { transform: translate(-2px, -2px) }
+      60% { transform: translate(2px, 2px) }
+      80% { transform: translate(2px, -2px) }
+      100% { transform: translate(0) }
+    }
+
+    /* --- FASE 1.5: CUENTA REGRESIVA ROMÁNTICA --- */
+    #countdown-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 60;
+      font-family: var(--font-code);
+      color: var(--color-primary); /* Texto rosa */
+      text-shadow: 0 0 5px var(--color-primary);
+    }
+
+    .lock-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: var(--color-secondary); /* Candado dorado */
+      animation: pulse 2s infinite;
+    }
+
+    .timer-display {
+      font-size: clamp(2rem, 5vw, 4rem);
+      border: 2px solid var(--color-secondary); /* Borde dorado */
+      padding: 20px;
+      border-radius: 10px;
+      background: rgba(255, 105, 180, 0.1); /* Fondo rosa transparente */
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+      margin: 20px 0;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; text-shadow: 0 0 10px var(--color-secondary); }
+      50% { opacity: 0.7; text-shadow: 0 0 0px var(--color-secondary); }
+      100% { opacity: 1; text-shadow: 0 0 10px var(--color-secondary); }
+    }
+    
+    /* Input de Contraseña Estilo Bóveda Secreta */
     #password-container {
       display: none;
       flex-direction: column;
@@ -79,11 +184,11 @@
       animation: fadeIn 0.5s;
     }
 
-    .hacker-input {
-      background: rgba(0, 0, 0, 0.5);
-      border: 2px solid #00ff00;
-      color: #00ff00;
-      font-family: 'Share Tech Mono', monospace;
+    .vault-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid var(--color-secondary); /* Borde dorado */
+      color: white;
+      font-family: var(--font-code);
       padding: 10px 15px;
       border-radius: 5px;
       text-align: center;
@@ -91,29 +196,36 @@
       outline: none;
       width: 250px;
       letter-spacing: 2px;
+      transition: border-color 0.3s;
     }
 
-    .hacker-input::placeholder {
-      color: rgba(0, 255, 0, 0.5);
+    .vault-input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
     }
 
-    .hacker-btn {
+    .vault-btn {
       margin-top: 15px;
-      background: #00ff00;
-      color: black;
-      font-family: 'Share Tech Mono', monospace;
-      padding: 8px 20px;
-      border: none;
+      background: var(--color-primary); /* Botón rosa */
+      color: white;
+      font-family: var(--font-body);
+      padding: 10px 25px;
+      border: 1px solid var(--color-primary);
       font-weight: bold;
       cursor: pointer;
-      border-radius: 3px;
+      border-radius: 20px;
+      transition: background 0.3s, transform 0.1s;
     }
 
-    .hacker-btn:hover { background: #00cc00; }
+    .vault-btn:hover { 
+      background: transparent;
+      border-color: var(--color-primary);
+      color: var(--color-primary); 
+      transform: scale(1.05);
+    }
 
     /* CONTENIDO PRINCIPAL */
     #main-content {
-      display: none; /* Se activa con JS */
+      display: none; 
       opacity: 0;
       transition: opacity 2s ease-in;
     }
@@ -136,7 +248,6 @@
       text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
-    /* Video Container */
     .video-wrapper {
       width: 100%;
       aspect-ratio: 16 / 9;
@@ -149,11 +260,10 @@
     
     iframe { width: 100%; height: 100%; }
 
-    /* Efecto de Máquina de Escribir */
     #love-letter {
       font-size: 1.25rem;
       line-height: 1.8;
-      min-height: 100px; /* Evita saltos de layout */
+      min-height: 100px;
     }
     
     .cursor::after {
@@ -162,41 +272,55 @@
     }
     
     @keyframes blink { 50% { opacity: 0; } }
-
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 
-  <!-- PANTALLA 1: SUSPENSO Y SEGURIDAD -->
+  <!-- FASE 0: TERMINAL DE ARRANQUE ROMÁNTICO -->
+  <div id="boot-screen"></div>
+
+  <!-- FASE 1: SUSPENSO Y BÓVEDA SECRETA -->
   <div id="welcome-screen">
     <div id="gift-icon" class="gift-box" onclick="gestionarClics()">🎁</div>
     
-    <!-- Mensaje cambiante -->
     <p id="status-msg" class="text-white text-xl mt-6 font-light tracking-widest uppercase text-center px-4">
-      Tienes un regalo pendiente...
+      Conexión.Estado(Pareja: Disponible)
     </p>
-    <p id="hint-msg" class="text-white text-xs mt-2 opacity-50">(Haz clic para abrir)</p>
+    <p id="hint-msg" class="text-white text-xs mt-2 opacity-50 font-sans">(Tocar el cofre para iniciar conexión)</p>
 
-    <!-- INPUT DE CONTRASEÑA (Oculto al inicio) -->
     <div id="password-container">
-      <p class="text-green-400 font-mono text-sm mb-2">> INGRESE PROTOCOLO DE BODA</p>
-      <input type="text" id="wedding-date" class="hacker-input" placeholder="DD-MM-AAAA">
-      <button onclick="verificarPassword()" class="hacker-btn">DESENCRIPTAR</button>
-      <p id="error-msg" class="text-red-500 font-mono text-xs mt-2 h-4"></p>
+      <!-- PISTA DE CONTRASEÑA AGREGADA AQUÍ -->
+      <p class="text-gold-400 font-sans text-lg mb-2 text-center">CLAVE SECRETA DE APERTURA</p>
+      <p class="text-sm opacity-70 mb-4 text-center text-pink-300">(PISTA: La fecha en que unimos nuestras vidas)</p>
+
+      <input type="text" id="wedding-date" class="vault-input" placeholder="DD-MM-AAAA">
+      <button onclick="verificarPassword()" class="vault-btn">ABRIR BÓVEDA</button>
+      <p id="error-msg" class="text-red-500 font-sans text-xs mt-2 h-4"></p>
     </div>
   </div>
 
-  <!-- PANTALLA 2: EL SHOW -->
+  <!-- FASE 1.5: PANTALLA DE BLOQUEO TEMPORAL -->
+  <div id="countdown-screen">
+    <div class="lock-icon">🔒</div>
+    <h2 class="text-2xl mb-4 text-center px-4 font-sans uppercase">ACCESO AUTORIZADO PERO CONGELADO EN EL TIEMPO</h2>
+    <p class="text-sm opacity-70 mb-6 font-sans">El corazón se abre a la hora programada</p>
+    
+    <div class="timer-display" id="timer">
+      00d 00h 00m 00s
+    </div>
+    
+    <p class="mt-8 text-sm blink-text animate-pulse font-sans">> ESPERANDO EL MOMENTO PERFECTO...</p>
+  </div>
+
+  <!-- FASE 2: EL SHOW ROMÁNTICO -->
   <div id="main-content">
     <div class="container mx-auto px-4">
       <h1>¡Feliz Cumpleaños!</h1>
       <h2 class="text-3xl font-light mb-6">Mi esposa amada ❤️</h2>
       
-      <!-- Aquí se escribirá el texto automáticamente -->
       <p id="love-letter" class="mb-8 font-light"></p>
 
-      <!-- VIDEO -->
       <div class="video-wrapper">
         <iframe 
           id="video-frame" 
@@ -213,13 +337,57 @@
     </div>
   </div>
 
-  <!-- MÚSICA DE FONDO -->
   <audio id="bg-music" loop>
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
   </audio>
 
   <script>
-    /* ================= LÓGICA DE SUSPENSO ================= */
+    /* ================= CONFIGURACIÓN ================= */
+    // Meses en Javascript son base 0 (Enero=0, Noviembre=10)
+    // 26 de Noviembre de 2025, 19:00:00 (7 PM)
+    const TARGET_DATE = new Date(2025, 10, 26, 19, 0, 0).getTime();
+    const VALID_PASSWORD = '28092024';
+
+    /* ================= FASE 0: BOOT SEQUENCE ROMÁNTICA ================= */
+    const bootLines = [
+        "INICIANDO_CORAZÓN_VIRTUAL...",
+        "CARGANDO_MÓDULO_DE_FELICIDAD...",
+        "ESTABLECIENDO_CONEXIÓN_SENTIMENTAL...",
+        "FILTRO_DE_RUTINA_IGNORADO.",
+        "ESCANENANDO_POR_OBJETIVO: 'AMOR'...",
+        "ALMA_GEMELA_IDENTIFICADA.",
+        "PAQUETE_DE_DATOS_PRECIOSO_ENCONTRADO.",
+        "LANZANDO_INTERFAZ_DE_DESEO..."
+    ];
+
+    window.onload = function() {
+        const bootScreen = document.getElementById('boot-screen');
+        let delay = 0;
+        
+        bootLines.forEach((line, index) => {
+            delay += Math.random() * 500 + 200; 
+            setTimeout(() => {
+                const p = document.createElement('p');
+                p.classList.add('terminal-line');
+                p.innerText = "> " + line;
+                bootScreen.appendChild(p);
+                bootScreen.scrollTop = bootScreen.scrollHeight;
+                
+                if (index === bootLines.length - 1) {
+                    setTimeout(finalizarBoot, 1000);
+                }
+            }, delay);
+        });
+    };
+
+    function finalizarBoot() {
+        const bootScreen = document.getElementById('boot-screen');
+        const welcomeScreen = document.getElementById('welcome-screen');
+        bootScreen.style.display = 'none';
+        welcomeScreen.style.display = 'flex';
+    }
+
+    /* ================= FASE 1: LÓGICA DE SUSPENSO ================= */
     let clicCount = 0;
     const giftIcon = document.getElementById('gift-icon');
     const statusMsg = document.getElementById('status-msg');
@@ -228,21 +396,21 @@
 
     function gestionarClics() {
       if (clicCount >= 3) return;
-
       clicCount++;
 
       if (clicCount === 1) {
         giftIcon.classList.remove('bounce'); 
         void giftIcon.offsetWidth; 
         giftIcon.classList.add('shake-mild');
-        statusMsg.innerText = "Acceso restringido. Protocolo de seguridad activo.";
+        statusMsg.innerText = "Error 403: No tienes la llave maestra.";
+        statusMsg.style.fontFamily = "var(--font-code)";
         
       } else if (clicCount === 2) {
         giftIcon.classList.remove('shake-mild');
         void giftIcon.offsetWidth;
         giftIcon.classList.add('shake-hard');
-        statusMsg.innerText = "¡ALERTA! Se requiere autenticación manual.";
-        statusMsg.style.color = "#ff69b4";
+        statusMsg.innerText = "¡ALERTA! BÓVEDA DE SENTIMIENTOS PROTEGIDA.";
+        statusMsg.style.color = "var(--color-primary)";
         statusMsg.classList.add('font-bold');
 
       } else if (clicCount === 3) {
@@ -253,9 +421,9 @@
     function mostrarPasswordInput() {
       giftIcon.style.cursor = "default";
       giftIcon.classList.remove('shake-hard');
-      statusMsg.innerText = "SISTEMA BLOQUEADO";
-      statusMsg.style.color = "#00ff00"; 
-      statusMsg.style.fontFamily = "'Share Tech Mono', monospace";
+      statusMsg.innerText = "SE REQUIERE CÓDIGO DE CONFIANZA";
+      statusMsg.style.color = "var(--color-secondary)"; 
+      statusMsg.style.fontFamily = "var(--font-code)";
       hintMsg.style.display = 'none';
       passwordContainer.style.display = 'flex';
     }
@@ -263,62 +431,121 @@
     function verificarPassword() {
       const input = document.getElementById('wedding-date');
       const errorMsg = document.getElementById('error-msg');
+      const welcomeScreen = document.getElementById('welcome-screen');
       const val = input.value.trim();
 
-      if (val === '28092024') {
-        abrirRegaloDefinitivo();
+      // Validación simple para que sea solo dígitos
+      const cleanVal = val.replace(/[^0-9]/g, ''); 
+
+      if (cleanVal === VALID_PASSWORD) {
+        // Contraseña correcta -> Verificar Tiempo
+        iniciarSecuenciaGlitch();
       } else {
+        // Contraseña incorrecta (Alarma Dramática)
         input.classList.add('shake-error');
-        input.style.borderColor = "red";
-        errorMsg.innerText = "ACCESO DENEGADO: Fecha incorrecta";
+        welcomeScreen.classList.add('red-flash');
+        input.style.borderColor = "var(--color-error)";
+        errorMsg.innerText = "CLAVE ERRÓNEA. INGRESO DENEGADO.";
         setTimeout(() => {
           input.classList.remove('shake-error');
-          input.style.borderColor = "#00ff00";
+          welcomeScreen.classList.remove('red-flash');
+          input.style.borderColor = "var(--color-secondary)";
           errorMsg.innerText = "";
         }, 1000);
       }
     }
 
+    function iniciarSecuenciaGlitch() {
+        const welcomeScreen = document.getElementById('welcome-screen');
+        welcomeScreen.classList.add('glitch-effect');
+        document.getElementById('status-msg').innerText = "VERIFICANDO SELLO DE TIEMPO...";
+        
+        setTimeout(() => {
+            verificarBloqueoTemporal();
+        }, 1500);
+    }
+
+    /* ================= FASE 1.5: VERIFICACIÓN TEMPORAL ================= */
+    function verificarBloqueoTemporal() {
+        const now = new Date().getTime();
+        const welcomeScreen = document.getElementById('welcome-screen');
+        
+        // Quitar la pantalla de bienvenida y el glitch
+        welcomeScreen.style.display = 'none'; 
+        welcomeScreen.classList.remove('glitch-effect');
+
+        if (now >= TARGET_DATE) {
+            // Ya pasó la hora -> Abrir directo
+            abrirRegaloDefinitivo();
+        } else {
+            // Aún falta -> Mostrar cuenta regresiva
+            iniciarCuentaRegresiva();
+        }
+    }
+
+    function iniciarCuentaRegresiva() {
+        const countdownScreen = document.getElementById('countdown-screen');
+        const timerElement = document.getElementById('timer');
+        countdownScreen.style.display = 'flex';
+
+        const interval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = TARGET_DATE - now;
+
+            if (distance < 0) {
+                // TIEMPO CUMPLIDO
+                clearInterval(interval);
+                countdownScreen.style.display = 'none';
+                abrirRegaloDefinitivo();
+                return;
+            }
+
+            // Cálculos de tiempo
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Formato con ceros a la izquierda
+            timerElement.innerText = 
+                (days < 10 ? "0" + days : days) + "d " + 
+                (hours < 10 ? "0" + hours : hours) + "h " +
+                (minutes < 10 ? "0" + minutes : minutes) + "m " +
+                (seconds < 10 ? "0" + seconds : seconds) + "s";
+        }, 1000);
+    }
+
+
+    /* ================= FASE 2: APERTURA FINAL ================= */
     function abrirRegaloDefinitivo() {
+      // Activar fondo bonito
+      document.body.classList.add('romantic-bg');
+      document.body.style.background = "";
+
       const audio = document.getElementById('bg-music');
-      
-      // Reproducimos la música inicialmente
       audio.volume = 0.5;
       audio.play().catch(e => console.log("Audio play error:", e));
 
-      // 1. Iniciamos el "Monitor de Foco" (Solución de pensamiento crítico)
-      // Como el iframe está en otro dominio, no podemos escuchar el evento "play".
-      // Pero sí podemos saber si el usuario hizo clic dentro del iframe (focus).
       monitorVideoInteraction(audio);
 
-      const welcomeScreen = document.getElementById('welcome-screen');
-      welcomeScreen.style.transform = 'scale(1.5)';
-      welcomeScreen.style.opacity = '0';
+      const mainContent = document.getElementById('main-content');
+      mainContent.style.display = 'block';
       
       setTimeout(() => {
-        welcomeScreen.style.display = 'none';
-        const mainContent = document.getElementById('main-content');
-        mainContent.style.display = 'block';
-        
-        setTimeout(() => {
-          mainContent.style.opacity = '1';
-          typeWriter();
-          lanzarConfetti();
-        }, 100);
-      }, 800);
+        mainContent.style.opacity = '1';
+        typeWriter();
+        lanzarConfetti();
+      }, 100);
     }
 
-    // --- NUEVA FUNCIÓN PARA DETECTAR INTERACCIÓN CON EL VIDEO ---
+    // --- MONITOR DE FOCO ---
     function monitorVideoInteraction(audioElement) {
       const videoFrame = document.getElementById('video-frame');
-      
-      // Chequeo constante cada 500ms
       const intervalId = setInterval(() => {
-        // Si el elemento activo del navegador es el iframe, el usuario le dio click
         if (document.activeElement === videoFrame) {
-          console.log("Usuario interactuó con el video. Deteniendo música de fondo.");
+          console.log("Usuario interactuó con el video.");
           audioElement.pause();
-          clearInterval(intervalId); // Dejamos de monitorear para ahorrar recursos
+          clearInterval(intervalId);
         }
       }, 500);
     }
