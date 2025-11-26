@@ -199,6 +199,7 @@
       <!-- VIDEO -->
       <div class="video-wrapper">
         <iframe 
+          id="video-frame" 
           src="https://drive.google.com/file/d/1s5cP8TqO7SEDR-95qC9w0on92g3BOUyT/preview" 
           frameborder="0"
           allow="autoplay; fullscreen"
@@ -226,20 +227,17 @@
     const passwordContainer = document.getElementById('password-container');
 
     function gestionarClics() {
-      // Si ya mostramos el password, no hacemos nada más con el icono
       if (clicCount >= 3) return;
 
       clicCount++;
 
       if (clicCount === 1) {
-        // Nivel 1: Resistencia leve
         giftIcon.classList.remove('bounce'); 
         void giftIcon.offsetWidth; 
         giftIcon.classList.add('shake-mild');
         statusMsg.innerText = "Acceso restringido. Protocolo de seguridad activo.";
         
       } else if (clicCount === 2) {
-        // Nivel 2: Resistencia fuerte
         giftIcon.classList.remove('shake-mild');
         void giftIcon.offsetWidth;
         giftIcon.classList.add('shake-hard');
@@ -248,7 +246,6 @@
         statusMsg.classList.add('font-bold');
 
       } else if (clicCount === 3) {
-        // Nivel 3: SOLICITAR PASSWORD
         mostrarPasswordInput();
       }
     }
@@ -257,11 +254,9 @@
       giftIcon.style.cursor = "default";
       giftIcon.classList.remove('shake-hard');
       statusMsg.innerText = "SISTEMA BLOQUEADO";
-      statusMsg.style.color = "#00ff00"; // Color hacker
+      statusMsg.style.color = "#00ff00"; 
       statusMsg.style.fontFamily = "'Share Tech Mono', monospace";
       hintMsg.style.display = 'none';
-      
-      // Mostrar input
       passwordContainer.style.display = 'flex';
     }
 
@@ -270,15 +265,12 @@
       const errorMsg = document.getElementById('error-msg');
       const val = input.value.trim();
 
-      // Verificar la fecha exacta
       if (val === '28092024') {
         abrirRegaloDefinitivo();
       } else {
-        // Error visual
         input.classList.add('shake-error');
         input.style.borderColor = "red";
         errorMsg.innerText = "ACCESO DENEGADO: Fecha incorrecta";
-        
         setTimeout(() => {
           input.classList.remove('shake-error');
           input.style.borderColor = "#00ff00";
@@ -289,10 +281,16 @@
 
     function abrirRegaloDefinitivo() {
       const audio = document.getElementById('bg-music');
+      
+      // Reproducimos la música inicialmente
       audio.volume = 0.5;
       audio.play().catch(e => console.log("Audio play error:", e));
 
-      // Efecto visual de desaparición
+      // 1. Iniciamos el "Monitor de Foco" (Solución de pensamiento crítico)
+      // Como el iframe está en otro dominio, no podemos escuchar el evento "play".
+      // Pero sí podemos saber si el usuario hizo clic dentro del iframe (focus).
+      monitorVideoInteraction(audio);
+
       const welcomeScreen = document.getElementById('welcome-screen');
       welcomeScreen.style.transform = 'scale(1.5)';
       welcomeScreen.style.opacity = '0';
@@ -304,12 +302,25 @@
         
         setTimeout(() => {
           mainContent.style.opacity = '1';
-          // Iniciar máquina de escribir
           typeWriter();
-          // Lanzar confeti
           lanzarConfetti();
         }, 100);
       }, 800);
+    }
+
+    // --- NUEVA FUNCIÓN PARA DETECTAR INTERACCIÓN CON EL VIDEO ---
+    function monitorVideoInteraction(audioElement) {
+      const videoFrame = document.getElementById('video-frame');
+      
+      // Chequeo constante cada 500ms
+      const intervalId = setInterval(() => {
+        // Si el elemento activo del navegador es el iframe, el usuario le dio click
+        if (document.activeElement === videoFrame) {
+          console.log("Usuario interactuó con el video. Deteniendo música de fondo.");
+          audioElement.pause();
+          clearInterval(intervalId); // Dejamos de monitorear para ahorrar recursos
+        }
+      }, 500);
     }
 
     /* ================= MÁQUINA DE ESCRIBIR ================= */
